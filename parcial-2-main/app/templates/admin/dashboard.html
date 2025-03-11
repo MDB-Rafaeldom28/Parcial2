@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h2>Panel de Control</h2>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{{ url_for('admin.nueva_reparacion') }}" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Nueva Reparación
+        </a>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col">
+                <div class="btn-group" role="group">
+                    <a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline-primary {% if not request.args.get('estado') %}active{% endif %}">
+                        Todos
+                    </a>
+                    <a href="{{ url_for('admin.dashboard', estado='Recibido') }}" class="btn btn-outline-primary {% if request.args.get('estado') == 'Recibido' %}active{% endif %}">
+                        Recibidos
+                    </a>
+                    <a href="{{ url_for('admin.dashboard', estado='En Proceso') }}" class="btn btn-outline-primary {% if request.args.get('estado') == 'En Proceso' %}active{% endif %}">
+                        En Proceso
+                    </a>
+                    <a href="{{ url_for('admin.dashboard', estado='Terminado') }}" class="btn btn-outline-primary {% if request.args.get('estado') == 'Terminado' %}active{% endif %}">
+                        Terminados
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Cliente</th>
+                        <th>Equipo</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reparacion in reparaciones %}
+                    <tr>
+                        <td>{{ reparacion.codigo }}</td>
+                        <td>{{ reparacion.nombre_cliente }}</td>
+                        <td>{{ reparacion.marca }} {{ reparacion.modelo }}</td>
+                        <td>{{ reparacion.fecha_registro.strftime('%d/%m/%Y') }}</td>
+                        <td>
+                            <span class="badge {{ {'Recibido': 'bg-info', 'En Proceso': 'bg-warning', 'Terminado': 'bg-success'}[reparacion.estado] }}">
+                                {{ reparacion.estado }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="{{ url_for('admin.editar_reparacion', id=reparacion.id) }}" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="confirmarEliminacion({{ reparacion.id }})">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-success" onclick="window.print()">
+                                    <i class="bi bi-printer"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Confirmación de Eliminación -->
+<div class="modal fade" id="eliminarModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmar Eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas eliminar esta reparación?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <form id="formEliminar" method="POST" style="display: inline;">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function confirmarEliminacion(id) {
+    const modal = new bootstrap.Modal(document.getElementById('eliminarModal'));
+    const form = document.getElementById('formEliminar');
+    form.action = `/reparacion/${id}/eliminar`;
+    modal.show();
+}
+</script>
+{% endblock %} 

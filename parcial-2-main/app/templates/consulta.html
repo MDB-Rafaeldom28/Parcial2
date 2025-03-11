@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Consulta de Reparación{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title text-center mb-4">Consulta el Estado de tu Reparación</h2>
+                <form id="consultaForm" class="mb-4">
+                    <div class="mb-3">
+                        <label for="codigo" class="form-label">Código de Reparación</label>
+                        <input type="text" class="form-control form-control-lg" id="codigo" name="codigo" 
+                               placeholder="Ingresa el código de 8 caracteres" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg w-100">Consultar Estado</button>
+                </form>
+
+                <div id="resultadoConsulta" style="display: none;">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title mb-4">Detalles de la Reparación</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Cliente:</strong> <span id="nombreCliente"></span></p>
+                                    <p><strong>Equipo:</strong> <span id="marcaModelo"></span></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Fecha de Ingreso:</strong> <span id="fechaRegistro"></span></p>
+                                    <p><strong>Estado:</strong> <span id="estadoReparacion" class="badge"></span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="errorConsulta" class="alert alert-danger" style="display: none;">
+                    No se encontró ninguna reparación con el código proporcionado.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('consultaForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const codigo = document.getElementById('codigo').value;
+    
+    fetch('/consulta', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'codigo=' + encodeURIComponent(codigo)
+    })
+    .then(response => response.json())
+    .then(data => {
+        const resultadoDiv = document.getElementById('resultadoConsulta');
+        const errorDiv = document.getElementById('errorConsulta');
+        
+        if (data.error) {
+            resultadoDiv.style.display = 'none';
+            errorDiv.style.display = 'block';
+        } else {
+            resultadoDiv.style.display = 'block';
+            errorDiv.style.display = 'none';
+            
+            document.getElementById('nombreCliente').textContent = data.nombre_cliente;
+            document.getElementById('marcaModelo').textContent = data.marca + ' ' + data.modelo;
+            document.getElementById('fechaRegistro').textContent = data.fecha_registro;
+            
+            const estadoSpan = document.getElementById('estadoReparacion');
+            estadoSpan.textContent = data.estado;
+            estadoSpan.className = 'badge ' + getEstadoClass(data.estado);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('resultadoConsulta').style.display = 'none';
+        document.getElementById('errorConsulta').style.display = 'block';
+    });
+});
+
+function getEstadoClass(estado) {
+    switch(estado) {
+        case 'Recibido':
+            return 'bg-info';
+        case 'En Proceso':
+            return 'bg-warning';
+        case 'Terminado':
+            return 'bg-success';
+        default:
+            return 'bg-secondary';
+    }
+}
+</script>
+{% endblock %} 

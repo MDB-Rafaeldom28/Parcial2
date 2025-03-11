@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Nueva Reparación{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title text-center mb-4">Nueva Reparación</h2>
+                <form method="POST" action="{{ url_for('admin.nueva_reparacion') }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    
+                    <h4 class="mb-3">Datos del Cliente</h4>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="nombre_cliente" class="form-label">Nombre Completo</label>
+                            <input type="text" class="form-control" id="nombre_cliente" name="nombre_cliente" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="telefono_cliente" class="form-label">Teléfono</label>
+                            <input type="tel" class="form-control" id="telefono_cliente" name="telefono_cliente" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="email_cliente" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="email_cliente" name="email_cliente">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="direccion_cliente" class="form-label">Dirección</label>
+                            <input type="text" class="form-control" id="direccion_cliente" name="direccion_cliente">
+                        </div>
+                    </div>
+
+                    <h4 class="mb-3">Datos del Electrodoméstico</h4>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="marca" class="form-label">Marca</label>
+                            <input type="text" class="form-control" id="marca" name="marca" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="modelo" class="form-label">Modelo</label>
+                            <input type="text" class="form-control" id="modelo" name="modelo" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="numero_serie" class="form-label">Número de Serie</label>
+                            <input type="text" class="form-control" id="numero_serie" name="numero_serie">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="descripcion_problema" class="form-label">Descripción del Problema</label>
+                        <textarea class="form-control" id="descripcion_problema" name="descripcion_problema" rows="3" required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="observaciones" class="form-label">Observaciones</label>
+                        <textarea class="form-control" id="observaciones" name="observaciones" rows="2"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="condiciones_recepcion" class="form-label">Condiciones de Recepción</label>
+                        <textarea class="form-control" id="condiciones_recepcion" name="condiciones_recepcion" rows="3">
+1. El cliente acepta que el diagnóstico puede tomar hasta 48 horas hábiles.
+2. La garantía de la reparación es de 30 días y cubre únicamente el trabajo realizado.
+3. Los repuestos necesarios serán cotizados por separado.
+4. El equipo debe ser retirado en un plazo máximo de 7 días después de notificada la reparación.</textarea>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Registrar Reparación</button>
+                        <a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio - Sistema de Reparaciones{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10 text-center">
+        <h1 class="display-4 mb-4">Bienvenido al Sistema de Reparaciones</h1>
+        <p class="lead mb-5">Gestión profesional de reparaciones de electrodomésticos</p>
+    </div>
+</div>
+
+<div class="row justify-content-center mb-5">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title text-center mb-4">Consulta el estado de tu reparación</h5>
+                <form action="{{ url_for('main.consulta') }}" method="POST" class="row g-3 justify-content-center">
+                    <div class="col-md-8">
+                        <input type="text" class="form-control form-control-lg" name="codigo" 
+                               placeholder="Ingresa tu código de reparación" required>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary btn-lg w-100">Consultar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-shield-check display-4 text-primary mb-3"></i>
+                <h5 class="card-title">Servicio Confiable</h5>
+                <p class="card-text">Técnicos certificados y garantía en nuestras reparaciones.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-clock-history display-4 text-primary mb-3"></i>
+                <h5 class="card-title">Seguimiento en Tiempo Real</h5>
+                <p class="card-text">Consulta el estado de tu reparación en cualquier momento.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-tools display-4 text-primary mb-3"></i>
+                <h5 class="card-title">Servicio Integral</h5>
+                <p class="card-text">Reparación de todo tipo de electrodomésticos.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

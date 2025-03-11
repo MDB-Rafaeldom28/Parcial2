@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Reparación{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title text-center mb-4">Editar Reparación</h2>
+                <form method="POST" action="{{ url_for('admin.editar_reparacion', id=reparacion.id) }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    
+                    <div class="alert alert-info">
+                        <strong>Código de Reparación:</strong> {{ reparacion.codigo }}
+                    </div>
+
+                    <h4 class="mb-3">Datos del Cliente</h4>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="nombre_cliente" class="form-label">Nombre Completo</label>
+                            <input type="text" class="form-control" id="nombre_cliente" name="nombre_cliente" 
+                                   value="{{ reparacion.nombre_cliente }}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="telefono_cliente" class="form-label">Teléfono</label>
+                            <input type="tel" class="form-control" id="telefono_cliente" name="telefono_cliente" 
+                                   value="{{ reparacion.telefono_cliente }}" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="email_cliente" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="email_cliente" name="email_cliente" 
+                                   value="{{ reparacion.email_cliente }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="direccion_cliente" class="form-label">Dirección</label>
+                            <input type="text" class="form-control" id="direccion_cliente" name="direccion_cliente" 
+                                   value="{{ reparacion.direccion_cliente }}">
+                        </div>
+                    </div>
+
+                    <h4 class="mb-3">Datos del Electrodoméstico</h4>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="marca" class="form-label">Marca</label>
+                            <input type="text" class="form-control" id="marca" name="marca" 
+                                   value="{{ reparacion.marca }}" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="modelo" class="form-label">Modelo</label>
+                            <input type="text" class="form-control" id="modelo" name="modelo" 
+                                   value="{{ reparacion.modelo }}" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="numero_serie" class="form-label">Número de Serie</label>
+                            <input type="text" class="form-control" id="numero_serie" name="numero_serie" 
+                                   value="{{ reparacion.numero_serie }}">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="descripcion_problema" class="form-label">Descripción del Problema</label>
+                        <textarea class="form-control" id="descripcion_problema" name="descripcion_problema" 
+                                  rows="3" required>{{ reparacion.descripcion_problema }}</textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="observaciones" class="form-label">Observaciones</label>
+                        <textarea class="form-control" id="observaciones" name="observaciones" 
+                                  rows="2">{{ reparacion.observaciones }}</textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="estado" class="form-label">Estado</label>
+                        <select class="form-select" id="estado" name="estado" required>
+                            <option value="Recibido" {% if reparacion.estado == 'Recibido' %}selected{% endif %}>Recibido</option>
+                            <option value="En Proceso" {% if reparacion.estado == 'En Proceso' %}selected{% endif %}>En Proceso</option>
+                            <option value="Terminado" {% if reparacion.estado == 'Terminado' %}selected{% endif %}>Terminado</option>
+                        </select>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                        <a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

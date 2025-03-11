@@ -1,0 +1,82 @@
+/* Estilos generales */
+body {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.footer {
+    margin-top: auto;
+}
+
+/* Estilos de la barra de navegación */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+
+.navbar-brand i {
+    margin-right: 8px;
+}
+
+/* Estilos de las tarjetas */
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,.075);
+    border: none;
+    margin-bottom: 1.5rem;
+}
+
+.card-title {
+    color: #0d6efd;
+}
+
+/* Estilos de los formularios */
+.form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25);
+}
+
+.form-label {
+    font-weight: 500;
+}
+
+/* Estilos de los botones */
+.btn-primary {
+    padding: 0.5rem 1.5rem;
+}
+
+.btn-outline-primary:hover {
+    background-color: #0d6efd;
+    color: white;
+}
+
+/* Estilos de las tablas */
+.table {
+    vertical-align: middle;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+/* Estilos de los badges */
+.badge {
+    padding: 0.5em 1em;
+}
+
+/* Estilos para impresión */
+@media print {
+    .navbar, .footer, .btn, .no-print {
+        display: none !important;
+    }
+    
+    .card {
+        box-shadow: none;
+        border: none;
+    }
+    
+    body {
+        background-color: white;
+    }
+} 
